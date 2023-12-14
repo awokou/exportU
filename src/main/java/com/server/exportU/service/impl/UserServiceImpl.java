@@ -28,7 +28,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void saveUser(UserDTO userDTO) {
+
+    }
+
+    @Override
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserDTO getUserById(long id) {
+        return null;
+    }
+
+    @Override
+    public void deleteUserById(int id) {
+        this.userRepository.deleteById(id);
     }
 }

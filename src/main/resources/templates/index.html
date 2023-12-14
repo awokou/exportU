@@ -37,7 +37,7 @@
                         <td th:text="${user.email}"></td>
                         <td>
                             <a class="btn btn-primary"><i class="fas fa-pencil-square-o" aria-hidden="true" title="Modifier"></i></a>
-                            <a class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true" title="Supprimer"></i></a>
+                            <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true" title="Supprimer"></i></a>
                         </td>
                     </tr>
                 </tbody>

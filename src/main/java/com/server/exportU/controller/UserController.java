@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,13 @@ public class UserController {
         excelGenerator.importExcel(file);
         //model.addAttribute("message", "Import Successfully");
         return "redirect:/import";
+    }
+
+    @GetMapping("/users/{id}")
+    public String deleteUserById(@PathVariable(value = "id") int id) {
+        // call delete user method
+        this.userService.deleteUserById(id);
+        return "redirect:/";
     }
 
     @GetMapping("/users/export/excel")
