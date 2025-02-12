@@ -1,35 +1,35 @@
 package com.server.exportU.mapper;
 
-import com.server.exportU.dto.UserDTO;
-import com.server.exportU.model.User;
+import com.server.exportU.dto.UserDto;
+import com.server.exportU.entity.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserMapper {
 
-    public User mapToUser(UserDTO userDTO) {
-        if(userDTO == null){
+    public User mapToUser(UserDto userDto) {
+        if(userDto == null){
             return null;
         }
         User user = new User();
-        user.setId(userDTO.getId());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
+        user.setId(userDto.getId());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
 
         return user;
     }
 
-    public  UserDTO mapToUserDTO(User user) {
+    public UserDto mapToUserDto(User user) {
         if(user == null){
             return null;
         }
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        userDTO.setEmail(user.getEmail());
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
 
-        return  userDTO;
+        return  userDto;
     }
 }

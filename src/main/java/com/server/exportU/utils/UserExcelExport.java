@@ -1,6 +1,6 @@
-package com.server.exportU.service.excel;
+package com.server.exportU.utils;
 
-import com.server.exportU.dto.UserDTO;
+import com.server.exportU.dto.UserDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,10 +16,10 @@ import java.util.List;
 
 public class UserExcelExport {
     private final XSSFWorkbook workbook;
-    private final List<UserDTO> userDTOS;
+    private final List<UserDto> userDTOS;
     private XSSFSheet sheet;
 
-    public UserExcelExport(List<UserDTO> userDTOS) {
+    public UserExcelExport(List<UserDto> userDTOS) {
         this.userDTOS = userDTOS;
         workbook = new XSSFWorkbook();
     }
@@ -62,7 +62,7 @@ public class UserExcelExport {
         font.setFontHeight(14);
         style.setFont(font);
 
-        for (UserDTO user : userDTOS) {
+        for (UserDto user : userDTOS) {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
 

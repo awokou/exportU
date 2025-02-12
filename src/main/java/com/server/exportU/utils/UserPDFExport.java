@@ -1,4 +1,4 @@
-package com.server.exportU.service.pdf;
+package com.server.exportU.utils;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -6,13 +6,13 @@ import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
-import com.server.exportU.dto.UserDTO;
+import com.server.exportU.dto.UserDto;
 
 public class UserPDFExport {
 
-    private List<UserDTO> userDTOS;
+    private List<UserDto> userDTOS;
 
-    public UserPDFExport(List<UserDTO> userDTOS) {
+    public UserPDFExport(List<UserDto> userDTOS) {
         this.userDTOS = userDTOS;
     }
 
@@ -38,7 +38,7 @@ public class UserPDFExport {
     }
 
     private void writeTableData(PdfPTable table) {
-        for (UserDTO user : userDTOS) {
+        for (UserDto user : userDTOS) {
             //table.addCell(String.valueOf(user.getId()));
             table.addCell(user.getFirstName());
             table.addCell(user.getLastName());

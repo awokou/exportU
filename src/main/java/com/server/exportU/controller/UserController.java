@@ -1,15 +1,13 @@
 package com.server.exportU.controller;
 
-
 import com.lowagie.text.DocumentException;
-import com.server.exportU.service.pdf.UserPDFExport;
+import com.server.exportU.utils.UserPDFExport;
 import org.springframework.ui.Model;
-import com.server.exportU.dto.UserDTO;
+import com.server.exportU.dto.UserDto;
 import com.server.exportU.service.UserService;
-import com.server.exportU.service.excel.ExcelGenerator;
-import com.server.exportU.service.excel.UserExcelExport;
+import com.server.exportU.utils.ExcelGenerator;
+import com.server.exportU.utils.UserExcelExport;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +23,15 @@ import java.util.List;
 
 
 @Controller
-@AllArgsConstructor
 public class UserController {
 
-    private UserService userService;
-    private ExcelGenerator excelGenerator;
+    private final UserService userService;
+    private final ExcelGenerator excelGenerator;
+
+    public UserController(UserService userService, ExcelGenerator excelGenerator) {
+        this.userService = userService;
+        this.excelGenerator = excelGenerator;
+    }
 
     @GetMapping("/")
     public String viewHomePage(Model model) {
@@ -45,7 +47,6 @@ public class UserController {
     @PostMapping("/import")
     public String createPostImport(@RequestParam(name = "file") MultipartFile file) throws Exception {
         excelGenerator.importExcel(file);
-        //model.addAttribute("message", "Import Successfully");
         return "redirect:/import";
     }
 
@@ -66,7 +67,7 @@ public class UserController {
         String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<UserDTO> listUsers = userService.getAllUsers();
+        List<UserDto> listUsers = userService.getAllUsers();
 
         UserExcelExport excelExporter = new UserExcelExport(listUsers);
 
@@ -83,7 +84,7 @@ public class UserController {
         String headerValue = "attachment; filename=users_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
-        List<UserDTO> listUsers = userService.getAllUsers();
+        List<UserDto> listUsers = userService.getAllUsers();
 
         UserPDFExport exporter = new UserPDFExport(listUsers);
         exporter.export(response);

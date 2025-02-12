@@ -1,6 +1,6 @@
-package com.server.exportU.service.excel;
+package com.server.exportU.utils;
 
-import com.server.exportU.model.User;
+import com.server.exportU.entity.User;
 import com.server.exportU.repository.UserRepository;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;

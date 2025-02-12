@@ -1,36 +1,37 @@
 package com.server.exportU.service.impl;
 
-import com.server.exportU.dto.UserDTO;
+import com.server.exportU.dto.UserDto;
 import com.server.exportU.mapper.UserMapper;
-import com.server.exportU.model.User;
+import com.server.exportU.entity.User;
 import com.server.exportU.repository.UserRepository;
 import com.server.exportU.service.UserService;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
-@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
 
     @Override
-    public List<UserDTO> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return userRepository.findAll()
-                .stream().map((user) -> userMapper.mapToUserDTO(user))
-                .collect(Collectors.toList());
+                .stream().map((user) -> userMapper.mapToUserDto(user))
+                .toList();
     }
 
     @Override
-    public void saveUser(UserDTO userDTO) {
-
-    }
+    public void saveUser(UserDto userDto) {}
 
     @Override
     public User findUserByEmail(String email) {
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserById(long id) {
+    public UserDto getUserById(long id) {
         return null;
     }
 
