@@ -1,12 +1,13 @@
 package com.server.exportU.controller;
 
 import com.lowagie.text.DocumentException;
-import com.server.exportU.utils.UserPDFExport;
+import com.server.exportU.exports.UserPDFExport;
+import com.server.exportU.repository.UserRepository;
 import org.springframework.ui.Model;
 import com.server.exportU.dto.UserDto;
-import com.server.exportU.service.UserService;
-import com.server.exportU.utils.ExcelGenerator;
-import com.server.exportU.utils.UserExcelExport;
+import com.server.exportU.service.IUserService;
+import com.server.exportU.imports.UserExcelImport;
+import com.server.exportU.exports.UserExcelExport;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +26,14 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    private final UserService userService;
-    private final ExcelGenerator excelGenerator;
+    private final IUserService userService;
+    private final UserExcelImport userExcelImport;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService, ExcelGenerator excelGenerator) {
+    public UserController(IUserService userService, UserExcelImport userExcelImport, UserRepository userRepository) {
         this.userService = userService;
-        this.excelGenerator = excelGenerator;
+        this.userExcelImport = userExcelImport;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -45,15 +48,21 @@ public class UserController {
     }
 
     @PostMapping("/import")
-    public String createPostImport(@RequestParam(name = "file") MultipartFile file) throws Exception {
-        excelGenerator.importExcel(file);
-        return "redirect:/import";
+    public String createPostImport(@RequestParam(name = "file") MultipartFile file,Model model) throws Exception {
+        // Check if database already has users
+        if (userRepository.count() > 0) {
+            model.addAttribute("message", "Users already exist in the database. Import skipped.");
+            return "import"; // return to the import page with message
+        }
+
+        userExcelImport.importExcel(file);
+        model.addAttribute("message", "Users imported successfully!");
+        return "redirect:/index";
     }
 
     @GetMapping("/users/{id}")
-    public String deleteUserById(@PathVariable(value = "id") int id) {
-        // call delete user method
-        this.userService.deleteUserById(id);
+    public String deleteUserById(@PathVariable(value = "id") Integer id) {
+        userService.deleteUserById(id);
         return "redirect:/";
     }
 
@@ -68,9 +77,7 @@ public class UserController {
         response.setHeader(headerKey, headerValue);
 
         List<UserDto> listUsers = userService.getAllUsers();
-
         UserExcelExport excelExporter = new UserExcelExport(listUsers);
-
         excelExporter.export(response);
     }
 
@@ -85,7 +92,6 @@ public class UserController {
         response.setHeader(headerKey, headerValue);
 
         List<UserDto> listUsers = userService.getAllUsers();
-
         UserPDFExport exporter = new UserPDFExport(listUsers);
         exporter.export(response);
 

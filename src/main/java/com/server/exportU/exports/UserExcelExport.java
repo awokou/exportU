@@ -1,4 +1,4 @@
-package com.server.exportU.utils;
+package com.server.exportU.exports;
 
 import com.server.exportU.dto.UserDto;
 import jakarta.servlet.ServletOutputStream;
@@ -15,12 +15,13 @@ import java.util.List;
 
 
 public class UserExcelExport {
+
     private final XSSFWorkbook workbook;
-    private final List<UserDto> userDTOS;
+    private final List<UserDto> userDtoList;
     private XSSFSheet sheet;
 
-    public UserExcelExport(List<UserDto> userDTOS) {
-        this.userDTOS = userDTOS;
+    public UserExcelExport(List<UserDto> userDtoList) {
+        this.userDtoList = userDtoList;
         workbook = new XSSFWorkbook();
     }
 
@@ -36,8 +37,8 @@ public class UserExcelExport {
         style.setFont(font);
 
         createCell(row, 0, "Id", style);
-        createCell(row, 1, "First Name", style);
-        createCell(row, 2, "Last Name", style);
+        createCell(row, 1, "Prenom(s)", style);
+        createCell(row, 2, "Nom", style);
         createCell(row, 3, "E-mail", style);
     }
 
@@ -62,7 +63,7 @@ public class UserExcelExport {
         font.setFontHeight(14);
         style.setFont(font);
 
-        for (UserDto user : userDTOS) {
+        for (UserDto user : userDtoList) {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
 
