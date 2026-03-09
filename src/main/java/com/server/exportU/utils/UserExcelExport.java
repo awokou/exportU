@@ -1,6 +1,5 @@
-package com.server.exportU.exports;
+package com.server.exportU.utils;
 
-import com.server.exportU.dto.UserDto;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,9 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.server.exportU.domain.dto.UserDto;
+
 import java.io.IOException;
 import java.util.List;
-
 
 public class UserExcelExport {
 
@@ -23,6 +23,17 @@ public class UserExcelExport {
     public UserExcelExport(List<UserDto> userDtoList) {
         this.userDtoList = userDtoList;
         workbook = new XSSFWorkbook();
+    }
+
+    public void export(HttpServletResponse response) throws IOException {
+        writeHeaderLine();
+        writeDataLines();
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        workbook.write(outputStream);
+        workbook.close();
+
+        outputStream.close();
     }
 
     private void writeHeaderLine() {
@@ -72,16 +83,5 @@ public class UserExcelExport {
             createCell(row, columnCount++, user.getLastName(), style);
             createCell(row, columnCount++, user.getEmail(), style);
         }
-    }
-
-    public void export(HttpServletResponse response) throws IOException {
-        writeHeaderLine();
-        writeDataLines();
-
-        ServletOutputStream outputStream = response.getOutputStream();
-        workbook.write(outputStream);
-        workbook.close();
-
-        outputStream.close();
     }
 }

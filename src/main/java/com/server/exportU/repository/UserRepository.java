@@ -1,8 +1,8 @@
 package com.server.exportU.repository;
 
-import com.server.exportU.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.server.exportU.domain.entity.User;
+
 public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByEmail(String email);
 }

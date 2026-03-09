@@ -1,38 +1,12 @@
 package com.server.exportU.service;
 
-import com.server.exportU.dto.UserDto;
-import com.server.exportU.repository.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+import com.server.exportU.domain.dto.UserDto;
 
-@Service
-@Transactional
-public class UserService implements IUserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
+    List<UserDto> getAllUsers();
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Override
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(user -> new UserDto(
-                        user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail()
-                ))
-                .toList();
-    }
-
-    @Override
-    public void deleteUserById(Integer id) {
-        this.userRepository.deleteById(id);
-    }
+    void deleteUserById(Integer id);
 }

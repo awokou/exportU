@@ -1,13 +1,15 @@
 package com.server.exportU.controller;
 
 import com.lowagie.text.DocumentException;
-import com.server.exportU.exports.UserPDFExport;
+import com.server.exportU.domain.dto.UserDto;
 import com.server.exportU.repository.UserRepository;
 import org.springframework.ui.Model;
-import com.server.exportU.dto.UserDto;
-import com.server.exportU.service.IUserService;
-import com.server.exportU.imports.UserExcelImport;
-import com.server.exportU.exports.UserExcelExport;
+
+import com.server.exportU.service.UserService;
+import com.server.exportU.utils.UserExcelExport;
+import com.server.exportU.utils.UserExcelImport;
+import com.server.exportU.utils.UserPDFExport;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +24,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 @Controller
 public class UserController {
 
-    private final IUserService userService;
+    private final UserService userService;
     private final UserExcelImport userExcelImport;
     private final UserRepository userRepository;
 
-    public UserController(IUserService userService, UserExcelImport userExcelImport, UserRepository userRepository) {
+    public UserController(UserService userService, UserExcelImport userExcelImport, UserRepository userRepository) {
         this.userService = userService;
         this.userExcelImport = userExcelImport;
         this.userRepository = userRepository;
@@ -48,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/import")
-    public String createPostImport(@RequestParam(name = "file") MultipartFile file,Model model) throws Exception {
+    public String createPostImport(@RequestParam(name = "file") MultipartFile file, Model model) throws Exception {
         // Check if database already has users
         if (userRepository.count() > 0) {
             model.addAttribute("message", "Users already exist in the database. Import skipped.");
@@ -94,6 +95,5 @@ public class UserController {
         List<UserDto> listUsers = userService.getAllUsers();
         UserPDFExport exporter = new UserPDFExport(listUsers);
         exporter.export(response);
-
     }
 }

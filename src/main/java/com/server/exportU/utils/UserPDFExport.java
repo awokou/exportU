@@ -1,4 +1,4 @@
-package com.server.exportU.exports;
+package com.server.exportU.utils;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
-import com.server.exportU.dto.UserDto;
+import com.server.exportU.domain.dto.UserDto;
 
 public class UserPDFExport {
 
